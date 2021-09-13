@@ -1,12 +1,13 @@
 ﻿/* (C) 2021 Přemysl Fára */
 
-using SixLabors.ImageSharp.PixelFormats;
-
 namespace ImageManipulator
 {
     using System;
+    using System.IO;
     
     using SixLabors.ImageSharp;
+    using SixLabors.ImageSharp.Formats.Jpeg;
+    using SixLabors.ImageSharp.PixelFormats;
     using SixLabors.ImageSharp.Processing;
 
 
@@ -57,6 +58,11 @@ namespace ImageManipulator
                 "/Users/enif/Pictures/IMG_20201018_110921-01.jpeg",
                 "/Users/enif/Pictures/IMG_20201018_110921-01_256.jpeg",
                 256);
+
+            TestImageJpegCompression(
+                "/Users/enif/Pictures/IMG_20201018_110921-01.jpeg",
+                "/Users/enif/Pictures/IMG_20201018_110921-01_max.jpeg",
+                1024 * 25);  // 25 KB
             
             return 0;
         }
@@ -105,14 +111,70 @@ namespace ImageManipulator
             }
         }
         
+        private static void TestImageJpegCompression(string srcImgPath, string destImagePath, int maxImageJpegSizeBytes)
+        {
+            using (var image = Image.Load<Rgba32>(srcImgPath))
+            {
+                image.Resize(1024);
+
+                var imageSaved = false;
+                for (var q = 100; q >= 5; q -= 5)
+                {
+                    byte[] bytes;
+                    using (var ms = new MemoryStream())
+                    {
+                        image.SaveAsJpeg(ms, new JpegEncoder() { Quality = q });
+                        bytes = ms.ToArray();
+                    }
+
+                    if (bytes.Length <= maxImageJpegSizeBytes)
+                    {
+                        File.WriteAllBytes(destImagePath, bytes);
+                        imageSaved = true;
+                        
+                        break;
+                    }
+                }
+
+                if (imageSaved == false)
+                {
+                    image.Save(destImagePath);    
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Generates a cropped and resized image from a source image.
+        /// </summary>
+        /// <param name="image">An input image.</param>
+        /// <param name="maxImageSideSize">The maximal image side size. (s <= 0 -> original side size)</param>
+        /// <param name="cropToAspectRatio">If true, the output image is cropped to the aspectRatioX/aspectRatioY aspect ratio.</param>
+        /// <param name="aspectRatioX">Aspect ratio X.</param>
+        /// <param name="aspectRatioY">Aspect ratio Y.</param>
+        private static void ExportImage(
+            Image<Rgba32> image,
+            int maxImageSideSize,
+            bool cropToAspectRatio,
+            double aspectRatioX,
+            double aspectRatioY)
+        {
+            if (cropToAspectRatio)
+            {
+                image.Crop(aspectRatioX, aspectRatioY);
+            }
+
+            image.Resize(maxImageSideSize);
+            
+            // TODO: Add JPEG max file size conversion.
+        }
+        
 
         /// <summary>
-        /// Crops a bitmap to a specific aspect ratio.
+        /// Crops an image to a specific aspect ratio.
         /// </summary>
         /// <param name="image">An image to crop.</param>
         /// <param name="aspectRatioX">Aspect ratio X.</param>
         /// <param name="aspectRatioY">Aspect ratio Y.</param>
-        /// <returns></returns>
         private static void Crop(this Image<Rgba32> image, double aspectRatioX, double aspectRatioY)
         {
             if (image.Width >= image.Height)
@@ -186,24 +248,24 @@ namespace ImageManipulator
         }
         
         
+        /// <summary>
+        /// Resizes an image, so none of its sides is bigger than maxImageSideSize.
+        /// </summary>
+        /// <param name="image">An image to resize.</param>
+        /// <param name="maxImageSideSize">The maximum size in pixel of the longer image size.</param>
         private static void Resize(this Image<Rgba32> image, int maxImageSideSize)
         {
             var srcWidth = image.Width;
             var srcHeight = image.Height;
-
-            // TODO: Nezvětšovat obrázky s jednou stranou menší než maxImageSideSize.
-
-            int destWidth, destHeight;
+          
             if (maxImageSideSize <= 0 || (srcWidth < maxImageSideSize && srcHeight < maxImageSideSize))
             {
                 // Too small or no side size limit.
-                
-                // destWidth = srcWidth;
-                // destHeight = srcHeight;
-
                 return;
             }
-            else if (srcWidth == srcHeight)
+            
+            int destWidth, destHeight;
+            if (srcWidth == srcHeight)
             {
                 // Square.
                 destWidth = maxImageSideSize;
