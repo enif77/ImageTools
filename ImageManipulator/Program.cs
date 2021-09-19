@@ -113,6 +113,7 @@ namespace ImageManipulator
             }
         }
         
+        
         private static void TestImageJpegCompression(string srcImgPath, string destImagePath, int maxImageJpegSizeBytes)
         {
             using (var image = Image.Load<Rgba32>(srcImgPath))
