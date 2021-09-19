@@ -10,7 +10,9 @@ namespace ImageManipulator
     using SixLabors.ImageSharp.PixelFormats;
     using SixLabors.ImageSharp.Processing;
 
+    using ImageTools.Shared.Transformations;
 
+    
     static class Program
     {
         public static int Main(string[] args)
@@ -96,7 +98,7 @@ namespace ImageManipulator
         {
             using (var image = Image.Load<Rgba32>(srcImgPath))
             {
-                image.Crop(aspectRatioX, aspectRatioY);
+                new CropImageTransformation(aspectRatioX, aspectRatioY).Execute(image);
                 image.Save(destImagePath);
             }
         }
@@ -106,7 +108,7 @@ namespace ImageManipulator
         {
             using (var image = Image.Load<Rgba32>(srcImgPath))
             {
-                image.Resize(maxImageSideSize);
+                new ResizeImageTransformation(maxImageSideSize).Execute(image);
                 image.Save(destImagePath);
             }
         }
@@ -115,7 +117,7 @@ namespace ImageManipulator
         {
             using (var image = Image.Load<Rgba32>(srcImgPath))
             {
-                image.Resize(1024);
+                new ResizeImageTransformation(1024).Execute(image);
 
                 var imageSaved = false;
                 for (var q = 100; q >= 5; q -= 5)
@@ -160,135 +162,13 @@ namespace ImageManipulator
         {
             if (cropToAspectRatio)
             {
-                image.Crop(aspectRatioX, aspectRatioY);
+                new CropImageTransformation(aspectRatioX, aspectRatioY).Execute(image);
             }
 
-            image.Resize(maxImageSideSize);
+            new ResizeImageTransformation(maxImageSideSize).Execute(image);
             
             // TODO: Add JPEG max file size conversion.
         }
-        
-
-        /// <summary>
-        /// Crops an image to a specific aspect ratio.
-        /// </summary>
-        /// <param name="image">An image to crop.</param>
-        /// <param name="aspectRatioX">Aspect ratio X.</param>
-        /// <param name="aspectRatioY">Aspect ratio Y.</param>
-        private static void Crop(this Image<Rgba32> image, double aspectRatioX, double aspectRatioY)
-        {
-            if (image.Width >= image.Height)
-            {
-                CropLandscapeImage(image, aspectRatioX, aspectRatioY);
-            }
-            else
-            {
-                CropPortraitImage(image, aspectRatioX, aspectRatioY);
-            }
-        }
-
-
-        private static void CropLandscapeImage(Image<Rgba32> image, double aspectRatioX, double aspectRatioY)
-        {
-            var imgWidth = (double)image.Width;
-            var imgHeight = (double)image.Height;
-
-            // Images more wide, than the aspect ratio requires.
-            if (imgWidth / imgHeight > (aspectRatioX / aspectRatioY))
-            {
-                var extraWidth = imgWidth - (imgHeight * (aspectRatioX / aspectRatioY));
-                var cropStartFrom = extraWidth / 2.0;
-                var destWidth = (int)(imgWidth - extraWidth);
-                
-                image.Mutate(x => x
-                    .Crop(new Rectangle((int)cropStartFrom, 0, destWidth, image.Height))
-                );
-            }
-            else
-            {
-                // Images more (or as narrow as the aspect ratio) narrow, than the aspect ration requires. 
-                var extraHeight = imgHeight - (imgWidth * (aspectRatioY / aspectRatioX));
-                var cropStartFrom = extraHeight / 2.0;
-                var destHeight = (int)(imgHeight - extraHeight);
-                
-                image.Mutate(x => x
-                    .Crop(new Rectangle(0, (int)cropStartFrom, image.Width, destHeight))
-                );
-            }
-        }
-        
-        
-        private static void CropPortraitImage(Image<Rgba32> image, double aspectRatioX, double aspectRatioY)
-        {
-            var imgWidth = (double)image.Width;
-            var imgHeight = (double)image.Height;
-
-            // Images more tall, than the aspect ratio requires.
-            if (imgHeight / imgWidth > (aspectRatioX / aspectRatioY))
-            {
-                var extraHeight = imgHeight - (imgWidth * (aspectRatioX / aspectRatioY));
-                var cropStartFrom = extraHeight / 2.0;
-                var destHeight = (int)(imgHeight - extraHeight);
-                
-                image.Mutate(x => x
-                    .Crop(new Rectangle(0, (int)cropStartFrom, image.Width, destHeight))
-                );
-            }
-            else
-            {
-                // Images more (or as narrow as the aspect ratio) narrow, than the aspect ration requires. 
-                var extraWidth = imgWidth - (imgHeight * (aspectRatioY / aspectRatioX));
-                var cropStartFrom = extraWidth / 2.0;
-                var destWidth = (int)(imgWidth - extraWidth);
-               
-                image.Mutate(x => x
-                    .Crop(new Rectangle((int)cropStartFrom, 0, destWidth, image.Height))
-                );
-            }
-        }
-        
-        
-        /// <summary>
-        /// Resizes an image, so none of its sides is bigger than maxImageSideSize.
-        /// </summary>
-        /// <param name="image">An image to resize.</param>
-        /// <param name="maxImageSideSize">The maximum size in pixel of the longer image size.</param>
-        private static void Resize(this Image<Rgba32> image, int maxImageSideSize)
-        {
-            var srcWidth = image.Width;
-            var srcHeight = image.Height;
-          
-            if (maxImageSideSize <= 0 || (srcWidth < maxImageSideSize && srcHeight < maxImageSideSize))
-            {
-                // Too small or no side size limit.
-                return;
-            }
-            
-            int destWidth, destHeight;
-            if (srcWidth == srcHeight)
-            {
-                // Square.
-                destWidth = maxImageSideSize;
-                destHeight = destWidth;
-            }
-            else if (srcWidth > srcHeight)
-            {
-                // Landscape.
-                destWidth = maxImageSideSize;
-                destHeight = (int)(srcHeight * (destWidth / (double)srcWidth));
-            }
-            else
-            {
-                // Portrait.
-                destHeight = maxImageSideSize;
-                destWidth = (int)(srcWidth * (destHeight / (double)srcHeight));
-            }
-            
-            image.Mutate(x => x
-                .Resize(destWidth, destHeight)
-            );
-        }
-        
     }
 }
 
