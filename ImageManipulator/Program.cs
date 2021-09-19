@@ -1,14 +1,14 @@
 ﻿/* (C) 2021 Přemysl Fára */
 
+using ImageTools.Shared.Encoders;
+
 namespace ImageManipulator
 {
     using System;
     using System.IO;
     
     using SixLabors.ImageSharp;
-    using SixLabors.ImageSharp.Formats.Jpeg;
     using SixLabors.ImageSharp.PixelFormats;
-    using SixLabors.ImageSharp.Processing;
 
     using ImageTools.Shared.Transformations;
 
@@ -70,28 +70,28 @@ namespace ImageManipulator
         }
 
         
-        private static void TestImageMutations()
-        {
-            // Open the file automatically detecting the file type to decode it.
-            // Our image is now in an uncompressed, file format agnostic, structure in-memory as
-            // a series of pixels.
-            // You can also specify the pixel format using a type parameter (e.g. Image<Rgba32> image = Image.Load<Rgba32>("foo.jpg"))
-            using (var image = Image.Load<Rgba32>("/Users/enif/Pictures/IMG_20201018_110921-01.jpeg"))
-            {
-                // Resize the image in place and return it for chaining.
-                // 'x' signifies the current image processing context.
-                image.Mutate(x => x
-                    .Resize(image.Width / 2, image.Height / 2)
-                    .Crop(new Rectangle(100, 100, 800, 600))
-                    .Flip(FlipMode.Horizontal)
-                    .Grayscale());
-
-                // The library automatically picks an encoder based on the file extension then
-                // encodes and write the data to disk.
-                // You can optionally set the encoder to choose.
-                image.Save("/Users/enif/Pictures/IMG_20201018_110921-01_s.jpeg");
-            }
-        }
+        // private static void TestImageMutations()
+        // {
+        //     // Open the file automatically detecting the file type to decode it.
+        //     // Our image is now in an uncompressed, file format agnostic, structure in-memory as
+        //     // a series of pixels.
+        //     // You can also specify the pixel format using a type parameter (e.g. Image<Rgba32> image = Image.Load<Rgba32>("foo.jpg"))
+        //     using (var image = Image.Load<Rgba32>("/Users/enif/Pictures/IMG_20201018_110921-01.jpeg"))
+        //     {
+        //         // Resize the image in place and return it for chaining.
+        //         // 'x' signifies the current image processing context.
+        //         image.Mutate(x => x
+        //             .Resize(image.Width / 2, image.Height / 2)
+        //             .Crop(new Rectangle(100, 100, 800, 600))
+        //             .Flip(FlipMode.Horizontal)
+        //             .Grayscale());
+        //
+        //         // The library automatically picks an encoder based on the file extension then
+        //         // encodes and write the data to disk.
+        //         // You can optionally set the encoder to choose.
+        //         image.Save("/Users/enif/Pictures/IMG_20201018_110921-01_s.jpeg");
+        //     }
+        // }
 
         
         private static void TestImageCropping(string srcImgPath, string destImagePath, double aspectRatioX, double aspectRatioY)
@@ -119,29 +119,14 @@ namespace ImageManipulator
             {
                 new ResizeImageTransformation(1024).Execute(image);
 
-                var imageSaved = false;
-                for (var q = 100; q >= 5; q -= 5)
+                byte[] bytes;
+                using (var ms = new MemoryStream())
                 {
-                    byte[] bytes;
-                    using (var ms = new MemoryStream())
-                    {
-                        image.SaveAsJpeg(ms, new JpegEncoder() { Quality = q });
-                        bytes = ms.ToArray();
-                    }
-
-                    if (bytes.Length <= maxImageJpegSizeBytes)
-                    {
-                        File.WriteAllBytes(destImagePath, bytes);
-                        imageSaved = true;
-                        
-                        break;
-                    }
+                    new JpegImageEncoder(100, maxImageJpegSizeBytes).Encode(image, ms);
+                    bytes = ms.ToArray();
                 }
-
-                if (imageSaved == false)
-                {
-                    image.Save(destImagePath);    
-                }
+                
+                File.WriteAllBytes(destImagePath, bytes);
             }
         }
         
