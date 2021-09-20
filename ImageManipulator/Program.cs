@@ -66,6 +66,16 @@ namespace ImageManipulator
                 "/Users/enif/Pictures/IMG_20201018_110921-01_max.jpeg",
                 1024 * 25);  // 25 KB
             
+            TestImagePngCompression(
+                "/Users/enif/Pictures/IMG_20201018_110921-01.jpeg",
+                "/Users/enif/Pictures/IMG_20201018_110921-01.png",
+                6);
+            
+            TestImagePngCompression(
+                "/Users/enif/Pictures/IMG_20201018_110921-01.jpeg",
+                "/Users/enif/Pictures/IMG_20201018_110921-01_max.png",
+                9);
+            
             return 0;
         }
 
@@ -124,6 +134,24 @@ namespace ImageManipulator
                 using (var ms = new MemoryStream())
                 {
                     new JpegImageEncoder(100, maxImageJpegSizeBytes).Encode(image, ms);
+                    bytes = ms.ToArray();
+                }
+                
+                File.WriteAllBytes(destImagePath, bytes);
+            }
+        }
+        
+        
+        private static void TestImagePngCompression(string srcImgPath, string destImagePath, int compressionLevel)
+        {
+            using (var image = Image.Load<Rgba32>(srcImgPath))
+            {
+                new ResizeImageTransformation(1024).Execute(image);
+
+                byte[] bytes;
+                using (var ms = new MemoryStream())
+                {
+                    new PngImageEncoder(compressionLevel).Encode(image, ms);
                     bytes = ms.ToArray();
                 }
                 
