@@ -1,5 +1,6 @@
 ﻿/* (C) 2021 Přemysl Fára */
 
+using ImageTools.Shared;
 using ImageTools.Shared.Encoders;
 
 namespace ImageManipulator
@@ -75,6 +76,10 @@ namespace ImageManipulator
                 "/Users/enif/Pictures/IMG_20201018_110921-01.jpeg",
                 "/Users/enif/Pictures/IMG_20201018_110921-01_max.png",
                 9);
+
+            TestImagePipeline(
+                "/Users/enif/Pictures/IMG_20201018_110921-01.jpeg",
+                "/Users/enif/Pictures/IMG_20201018_110921-01_pipeline.jpeg");
             
             return 0;
         }
@@ -158,6 +163,23 @@ namespace ImageManipulator
                 File.WriteAllBytes(destImagePath, bytes);
             }
         }
+        
+        
+        private static void TestImagePipeline(string srcImgPath, string destImagePath)
+        {
+            using (var image = Image.Load<Rgba32>(srcImgPath))
+            {
+                var pipeline = new ImageProcessingPipeline();
+                
+                pipeline.AddImageTransformation(new CropImageTransformation(1, 1));
+                pipeline.AddImageTransformation(new ResizeImageTransformation(1024));
+                
+                pipeline.SetImageEncoder(new JpegImageEncoder());
+                
+                File.WriteAllBytes(destImagePath, pipeline.Execute(image));
+            }
+        }
+        
         
         /// <summary>
         /// Generates a cropped and resized image from a source image.
