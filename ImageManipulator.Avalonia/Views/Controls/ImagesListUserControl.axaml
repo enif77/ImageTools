@@ -12,12 +12,14 @@
             ScrollViewer.VerticalScrollBarVisibility="Visible"
             SelectionMode="Multiple"
             VerticalAlignment="Stretch"
-            Items="{Binding Images}">
-        </ListBox>
+            Items="{Binding Images}" />
         
-        <StackPanel Grid.Row="1" Orientation="Horizontal">
-            <Button>+</Button>
-            <Button>-</Button>
+        <StackPanel
+            Grid.Row="1"
+            Orientation="Horizontal">
+            
+            <Button Margin="4" Width="42" HorizontalContentAlignment="Center">+</Button>
+            <Button Margin="4" Width="42" HorizontalContentAlignment="Center">-</Button>
         </StackPanel>
     </Grid>
     
