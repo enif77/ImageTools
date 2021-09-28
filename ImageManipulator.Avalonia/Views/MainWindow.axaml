@@ -13,9 +13,23 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-    <Grid ColumnDefinitions="Auto,*">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250" MinWidth="250" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        
         <controls:ImagesListUserControl Grid.Column="0" VerticalAlignment="Stretch"/>
-        <TextBlock Grid.Column="1" Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>    
+        
+        <GridSplitter Grid.Column="1"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Stretch"
+                      Background="DarkGray" 
+                      ShowsPreview="True"
+                      Width="4" />
+        
+        <TextBlock Grid.Column="2" Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>    
     </Grid>
     
 </Window>

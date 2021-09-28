@@ -12,12 +12,7 @@
             ScrollViewer.VerticalScrollBarVisibility="Visible"
             SelectionMode="Multiple"
             VerticalAlignment="Stretch"
-            MinWidth="200">
-            
-            <ListBoxItem>image1.jpeg</ListBoxItem>
-            <ListBoxItem>image2.jpeg</ListBoxItem>
-            <ListBoxItem>image3.jpeg</ListBoxItem>
-            <ListBoxItem>image4.jpeg</ListBoxItem>
+            Items="{Binding Images}">
         </ListBox>
         
         <StackPanel Grid.Row="1" Orientation="Horizontal">

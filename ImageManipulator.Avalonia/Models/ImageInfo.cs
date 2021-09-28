@@ -14,5 +14,11 @@ namespace ImageManipulator.Avalonia.Models
         /// A name displayed in the list of images.
         /// </summary>
         public string DisplayName { get; set; }
+
+
+        public override string ToString()
+        {
+            return DisplayName ?? string.Empty;
+        }
     }
 }
