@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Text;
+using Avalonia.Controls;
 using Avalonia.Controls.Selection;
 using ImageManipulator.Avalonia.Models;
 
@@ -11,6 +13,7 @@ namespace ImageManipulator.Avalonia.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
+        private readonly Window _mainWindow;
         public ObservableCollection<ImageInfoViewModel> Images { get; }
         
         public SelectionModel<ImageInfoViewModel> Selection { get; }
@@ -18,35 +21,70 @@ namespace ImageManipulator.Avalonia.ViewModels
         public string Greeting => "Welcome to Avalonia!";
 
 
-        public MainWindowViewModel()
+        public MainWindowViewModel(Window mainWindow)
         {
+            _mainWindow = mainWindow ?? throw new ArgumentNullException(nameof(mainWindow));
+            
             Images = new ObservableCollection<ImageInfoViewModel>();
             Selection = new SelectionModel<ImageInfoViewModel>
             {
                 SingleSelect = false
             };
-            Selection.SelectionChanged += SelectionChanged;
+            //Selection.SelectionChanged += SelectionChanged;
         }
 
         
-        void SelectionChanged(object sender, SelectionModelSelectionChangedEventArgs e)
-        {
-            // ... handle selection changed
-        }
+        // void SelectionChanged(object sender, SelectionModelSelectionChangedEventArgs e)
+        // {
+        //     // ... handle selection changed
+        // }
         
 
-        public void AddImagesButtonClicked()
+        public async void AddImagesButtonClickedAsync()
         {
             Selection.Clear();
-            Images.Clear();
-            
-            foreach (var image in GetImagesFromPath("/Users/enif/Pictures"))
+
+            // TODO: Move OpenFileDialog to UI.
+            var ofd = new OpenFileDialog
             {
-                Images.Add(new ImageInfoViewModel(image));
+                AllowMultiple = true,
+                Title = "Choose images to add"
+            };
+
+            foreach (var selectedFilePath in await ofd.ShowAsync(_mainWindow))
+            {
+                if (Images.Any(existingImage => existingImage.Path == selectedFilePath))
+                {
+                    continue;
+                }
+                
+                var selectedFileExtension = Path.GetExtension(selectedFilePath);
+                if (string.IsNullOrEmpty(selectedFileExtension))
+                {
+                    continue;
+                }
+
+                selectedFileExtension = selectedFileExtension.ToLowerInvariant();
+                if (selectedFileExtension != ".jpeg" &&
+                    selectedFileExtension != ".jpg" &&
+                    selectedFileExtension != ".png")
+                {
+                    continue;
+                }
+
+                var index = Images.InsertInPlace(new ImageInfoViewModel(
+                    new ImageInfo()
+                    {
+                        DisplayName = Path.GetFileName(selectedFilePath),
+                        Path = selectedFilePath
+                    }),
+                    o => o.DisplayName);
+                
+                Selection.Select(index);
             }
         }
 
-
+        
         public void RemoveImagesButtonClicked()
         {
             if (Selection.Count == 0)
@@ -63,23 +101,23 @@ namespace ImageManipulator.Avalonia.ViewModels
         }
 
 
-        private IEnumerable<ImageInfo> GetImagesFromPath(string path)
-        {
-            var images = new List<ImageInfo>();
-
-            if (string.IsNullOrEmpty(path) || Directory.Exists(path) == false)
-            {
-                return images;
-            }
-            
-            var files = System.IO.Directory.GetFiles(path, "*.jpeg");
-            foreach (var file in files)
-            {
-                images.Add(new ImageInfo() { DisplayName = Path.GetFileName(file), Path = file });
-            }
-
-            return images;
-        }
+        // private IEnumerable<ImageInfo> GetImagesFromPath(string path)
+        // {
+        //     var images = new List<ImageInfo>();
+        //
+        //     if (string.IsNullOrEmpty(path) || Directory.Exists(path) == false)
+        //     {
+        //         return images;
+        //     }
+        //     
+        //     var files = System.IO.Directory.GetFiles(path, "*.jpeg");
+        //     foreach (var file in files)
+        //     {
+        //         images.Add(new ImageInfo() { DisplayName = Path.GetFileName(file), Path = file });
+        //     }
+        //
+        //     return images;
+        // }
 
     }
 }

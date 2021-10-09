@@ -37,7 +37,7 @@
                 Margin="4"
                 Width="42"
                 HorizontalContentAlignment="Center"
-                Command="{Binding AddImagesButtonClicked}">+</Button>
+                Command="{Binding AddImagesButtonClickedAsync}">+</Button>
             <Button
                 Margin="4"
                 Width="42"
