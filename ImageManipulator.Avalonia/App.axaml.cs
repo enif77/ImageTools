@@ -18,7 +18,10 @@ namespace ImageManipulator.Avalonia
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 desktop.MainWindow = new MainWindow();
-                desktop.MainWindow.DataContext = new MainWindowViewModel(desktop.MainWindow);
+                desktop.MainWindow.DataContext = new MainWindowViewModel()
+                {
+                    MainWindow = desktop.MainWindow
+                };
             }
 
             base.OnFrameworkInitializationCompleted();

@@ -1,7 +1,8 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="using:ImageManipulator.Avalonia"
-             x:Class="ImageManipulator.Avalonia.App">
+             x:Class="ImageManipulator.Avalonia.App"
+             Name="Images Manipulator">
     
     <Application.DataTemplates>
         <local:ViewLocator/>
@@ -10,4 +11,11 @@
     <Application.Styles>
         <FluentTheme Mode="Light"/>
     </Application.Styles>
+    
+    <NativeMenu.Menu>
+        <NativeMenu>
+            <NativeMenuItem Header="About Images Manipulator" Command="{Binding AboutMenuItemClicked}" />
+        </NativeMenu>
+    </NativeMenu.Menu>
+    
 </Application>

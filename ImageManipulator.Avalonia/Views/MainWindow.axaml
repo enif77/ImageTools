@@ -7,7 +7,7 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="ImageManipulator.Avalonia.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
-        Title="ImageManipulator.Avalonia">
+        Title="Image Manipulator (Avalonia)">
 
     <Design.DataContext>
         <vm:MainWindowViewModel/>
@@ -29,7 +29,7 @@
                       ShowsPreview="True"
                       Width="4" />
         
-        <TextBlock Grid.Column="2" Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>    
+        <controls:ImagesTransformationUserControl Grid.Column="2"></controls:ImagesTransformationUserControl>
     </Grid>
     
 </Window>

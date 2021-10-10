@@ -13,18 +13,16 @@ namespace ImageManipulator.Avalonia.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
-        private readonly Window _mainWindow;
+        public Window? MainWindow { get; set; }
         public ObservableCollection<ImageInfoViewModel> Images { get; }
         
         public SelectionModel<ImageInfoViewModel> Selection { get; }
         
-        public string Greeting => "Welcome to Avalonia!";
+        public string Greeting => "Welcome to Images Manipulator!";
 
 
-        public MainWindowViewModel(Window mainWindow)
+        public MainWindowViewModel()
         {
-            _mainWindow = mainWindow ?? throw new ArgumentNullException(nameof(mainWindow));
-            
             Images = new ObservableCollection<ImageInfoViewModel>();
             Selection = new SelectionModel<ImageInfoViewModel>
             {
@@ -38,7 +36,13 @@ namespace ImageManipulator.Avalonia.ViewModels
         // {
         //     // ... handle selection changed
         // }
-        
+
+
+        public void AboutMenuItemClicked()
+        {
+            
+        }
+
 
         public async void AddImagesButtonClickedAsync()
         {
@@ -51,7 +55,7 @@ namespace ImageManipulator.Avalonia.ViewModels
                 Title = "Choose images to add"
             };
 
-            foreach (var selectedFilePath in await ofd.ShowAsync(_mainWindow))
+            foreach (var selectedFilePath in await ofd.ShowAsync(MainWindow))
             {
                 if (Images.Any(existingImage => existingImage.Path == selectedFilePath))
                 {
