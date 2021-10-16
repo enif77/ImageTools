@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using ImageManipulator.Avalonia.Models;
 using ImageManipulator.Avalonia.ViewModels;
 using ImageManipulator.Avalonia.Views;
 
@@ -18,7 +19,8 @@ namespace ImageManipulator.Avalonia
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 desktop.MainWindow = new MainWindow();
-                desktop.MainWindow.DataContext = new MainWindowViewModel()
+                desktop.MainWindow.DataContext = new MainWindowViewModel(
+                    new ImageTransformation())
                 {
                     MainWindow = desktop.MainWindow
                 };

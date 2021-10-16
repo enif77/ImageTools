@@ -1,12 +1,17 @@
+/* Image Manipulator - (C) 2021 Premysl Fara  */
+
 namespace ImageManipulator.Avalonia.Models
 {
+    using System;
+    
+    
     /// <summary>
     /// Holds information about an image.
     /// </summary>
     public class ImageInfo
     {
         /// <summary>
-        /// A path to the image on a disk.
+        /// A path to the image on the disk.
         /// </summary>
         public string Path { get; set; }
         
@@ -15,10 +20,15 @@ namespace ImageManipulator.Avalonia.Models
         /// </summary>
         public string DisplayName { get; set; }
 
-
-        public override string ToString()
+        
+        public ImageInfo(string path, string displayName)
         {
-            return DisplayName ?? string.Empty;
+            Path = path ?? throw new ArgumentNullException(nameof(path));
+            DisplayName = displayName ?? throw new ArgumentNullException(nameof(displayName));
         }
+        
+
+        public override string ToString() =>
+            DisplayName;
     }
 }

@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.IO;
-using System.Text;
-using ImageManipulator.Avalonia.Models;
+﻿/* Image Manipulator - (C) 2021 Premysl Fara  */
 
 namespace ImageManipulator.Avalonia.ViewModels
 {
+    using System;
+    using System.ComponentModel;
+
+    using ImageManipulator.Avalonia.Models;
+
+    
     public class ImageInfoViewModel : INotifyPropertyChanged
     {
         public ImageInfo Model { get; }
