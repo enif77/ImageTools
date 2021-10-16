@@ -221,6 +221,12 @@ namespace ImageManipulator.Avalonia.ViewModels
         #endregion
 
 
+        public MainWindowViewModel()
+            : this(new ImageTransformation())
+        {
+        }
+        
+
         public MainWindowViewModel(ImageTransformation model)
         {
             Model = model ?? throw new ArgumentNullException(nameof(model));

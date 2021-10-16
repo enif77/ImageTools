@@ -1,0 +1,38 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="ImageManipulator.Avalonia.Views.Controls.OutputJpegUserControl">
+    
+    <Grid ColumnDefinitions="Auto, Auto, *" RowDefinitions="Auto, Auto, Auto">
+        <CheckBox
+            Name="ApplyCheckBox"
+            Grid.Column="0" Grid.Row="0"
+            IsChecked="{Binding GenerateJpeg}" />
+        
+        <TextBlock
+            Grid.Column="1" Grid.Row="0">JPEG</TextBlock>
+        
+        <TextBlock
+            Grid.Column="1" Grid.Row="1">Maximal JPEG quality:</TextBlock>
+        
+        <Slider
+            Grid.Column="2" Grid.Row="1" Minimum="1" Maximum="100" />
+        
+        <TextBlock
+            Grid.Column="1" Grid.Row="2">Maximal file size:</TextBlock>
+        
+        <StackPanel
+            Grid.Column="2" Grid.Row="2"
+            Orientation="Horizontal">
+            
+            <TextBox Name="MaxSizeTextBox"></TextBox>
+            <Button>-</Button>
+            <Button>+</Button>
+            
+            <!-- TODO: Units selector (bytes, KB, MB ...).  -->
+        </StackPanel>
+    </Grid>
+    
+</UserControl>

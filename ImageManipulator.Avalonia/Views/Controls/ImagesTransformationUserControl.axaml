@@ -1,6 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:ImageManipulator.Avalonia.ViewModels"
+             xmlns:controls="using:ImageManipulator.Avalonia.Views.Controls"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
@@ -10,6 +11,13 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
     
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+    <Grid
+        RowDefinitions="Auto, Auto, Auto, Auto, *">
+        
+        <controls:CropImageUserControl Grid.Row="0"/>
+        <controls:ResizeImageUserControl Grid.Row="1"/>
+        <controls:OutputJpegUserControl Grid.Row="2"/>
+        <controls:OutputPngUserControl Grid.Row="3"/>
+    </Grid>
     
 </UserControl>
