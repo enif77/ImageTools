@@ -263,7 +263,13 @@ namespace ImageManipulator.Avalonia.ViewModels
                 Title = "Choose images to add"
             };
 
-            foreach (var selectedFilePath in await ofd.ShowAsync(MainWindow))
+            var selectedFiles = await ofd.ShowAsync(MainWindow);
+            if (selectedFiles == null)
+            {
+                return;
+            }
+
+            foreach (var selectedFilePath in selectedFiles)
             {
                 if (Images.Any(existingImage => existingImage.Path == selectedFilePath))
                 {
