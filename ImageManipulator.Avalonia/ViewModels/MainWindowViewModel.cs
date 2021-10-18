@@ -12,10 +12,12 @@ namespace ImageManipulator.Avalonia.ViewModels
     using System.Linq;
     
     using ImageManipulator.Avalonia.Models;
+    using ImageManipulator.Avalonia.Services;
 
     
     public class MainWindowViewModel : ViewModelBase
     {
+        private readonly IAppService _appService;
         public Window? MainWindow { get; set; }
         
         
@@ -61,6 +63,37 @@ namespace ImageManipulator.Avalonia.ViewModels
                 OnPropertyChanged(nameof(ApplyCrop));
             }
         }
+
+
+        /// <summary>
+        /// The list of available image aspect ratio crop presets.
+        /// </summary>
+        public ObservableCollection<ImageCropPreset> ImageCropPresets { get; }
+
+        private ImageCropPreset _selectedImageCropPreset = null!;
+
+        /// <summary>
+        /// The currently selected image aspect ratio crop preset.
+        /// </summary>
+        public ImageCropPreset SelectedImageCropPreset
+        {
+            get => _selectedImageCropPreset;
+
+            set
+            {
+                if (value == _selectedImageCropPreset)
+                {
+                    return;
+                }
+
+                _selectedImageCropPreset = value;
+                OnPropertyChanged(nameof(SelectedImageCropPreset));
+                
+                AspectRatioX = _selectedImageCropPreset.AspectRatioX;
+                AspectRatioY = _selectedImageCropPreset.AspectRatioY;
+            }
+        }
+
 
         /// <summary>
         /// The X value of the desired output aspect ratio (int, 0 &lt; X &lt;= Int32.Max).
@@ -222,13 +255,18 @@ namespace ImageManipulator.Avalonia.ViewModels
 
 
         public MainWindowViewModel()
-            : this(new ImageTransformation())
+            : this(
+                new AppService(),
+                new ImageTransformation())
         {
         }
         
 
-        public MainWindowViewModel(ImageTransformation model)
+        public MainWindowViewModel(
+            IAppService appService,
+            ImageTransformation model)
         {
+            _appService = appService ?? throw new ArgumentNullException(nameof(appService));
             Model = model ?? throw new ArgumentNullException(nameof(model));
             
             Images = new ObservableCollection<ImageInfoViewModel>();
@@ -237,6 +275,9 @@ namespace ImageManipulator.Avalonia.ViewModels
                 SingleSelect = false
             };
             //Selection.SelectionChanged += SelectionChanged;
+
+            ImageCropPresets = new ObservableCollection<ImageCropPreset>(_appService.GetImageCropPresets());
+            SelectedImageCropPreset = ImageCropPresets[0];
         }
 
         

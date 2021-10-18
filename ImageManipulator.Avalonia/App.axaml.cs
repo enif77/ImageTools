@@ -2,6 +2,7 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using ImageManipulator.Avalonia.Models;
+using ImageManipulator.Avalonia.Services;
 using ImageManipulator.Avalonia.ViewModels;
 using ImageManipulator.Avalonia.Views;
 
@@ -20,6 +21,7 @@ namespace ImageManipulator.Avalonia
             {
                 desktop.MainWindow = new MainWindow();
                 desktop.MainWindow.DataContext = new MainWindowViewModel(
+                    new AppService(),
                     new ImageTransformation())
                 {
                     MainWindow = desktop.MainWindow
