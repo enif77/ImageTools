@@ -11,20 +11,21 @@
             Grid.Column="0" Grid.Row="0"
             IsChecked="{Binding ApplyCrop}" />
         
-        <TextBlock
-            Grid.Column="1" Grid.Row="0">Crop</TextBlock>
+        <TextBlock Grid.Column="1" Grid.Row="0">Crop</TextBlock>
         
         <ComboBox
             Name="SelectAspectRatioComboBox"
             Grid.Column="2" Grid.Row="0"
+            IsEnabled="{Binding #ApplyCheckBox.IsChecked}"
             SelectedItem="{Binding SelectedImageCropPreset}"
             Items="{Binding ImageCropPresets}" />
         
-        <TextBlock Grid.Column="1" Grid.Row="1">Aspect ration X:</TextBlock>
+        <TextBlock Grid.Column="1" Grid.Row="1">Aspect ratio X:</TextBlock>
         
         <StackPanel
             Grid.Column="2" Grid.Row="1"
-            Orientation="Horizontal">
+            Orientation="Horizontal"
+            IsEnabled="{Binding #ApplyCheckBox.IsChecked}">
             
             <TextBox
                 Name="AspectRatioXTextBox"
@@ -34,11 +35,12 @@
             <!-- <Button>+</Button> -->
         </StackPanel>
         
-        <TextBlock Grid.Column="1" Grid.Row="2">Aspect ration Y:</TextBlock>
+        <TextBlock Grid.Column="1" Grid.Row="2">Aspect ratio Y:</TextBlock>
         
         <StackPanel
             Grid.Column="2" Grid.Row="2"
-            Orientation="Horizontal">
+            Orientation="Horizontal"
+            IsEnabled="{Binding #ApplyCheckBox.IsChecked}">
             
             <TextBox
                 Name="AspectRatioYTextBox"

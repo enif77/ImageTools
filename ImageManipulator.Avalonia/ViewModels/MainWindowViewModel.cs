@@ -173,24 +173,24 @@ namespace ImageManipulator.Avalonia.ViewModels
             }
         }
         
-        // Output
+        // Output - JPEG
         
         /// <summary>
-        /// If true, the JPEG output file format will be used.
+        /// If true, the JPEG output file format will be generated.
         /// </summary>
-        public bool UseJpegOutputFileFormat
+        public bool GenerateJpeg
         {
-            get => Model.UseJpegOutputFileFormat;
+            get => Model.GenerateJpeg;
 
             set
             {
-                if (value == Model.UseJpegOutputFileFormat)
+                if (value == Model.GenerateJpeg)
                 {
                     return;
                 }
 
-                Model.UseJpegOutputFileFormat = value;
-                OnPropertyChanged(nameof(UseJpegOutputFileFormat));
+                Model.GenerateJpeg = value;
+                OnPropertyChanged(nameof(GenerateJpeg));
             }
         }
         
@@ -232,6 +232,27 @@ namespace ImageManipulator.Avalonia.ViewModels
             }
         }
         
+        // Output - PNG
+       
+        /// <summary>
+        /// If true, the PNG output file format will be generated.
+        /// </summary>
+        public bool GeneratePng
+        {
+            get => Model.GeneratePng;
+
+            set
+            {
+                if (value == Model.GeneratePng)
+                {
+                    return;
+                }
+
+                Model.GeneratePng = value;
+                OnPropertyChanged(nameof(GeneratePng));
+            }
+        }
+        
         /// <summary>
         /// The requested PNG compression level (0 &lt;= C &lt; 10).
         /// </summary>
@@ -252,8 +273,8 @@ namespace ImageManipulator.Avalonia.ViewModels
         }
         
         #endregion
-
-
+        
+        
         public MainWindowViewModel()
             : this(
                 new AppService(),

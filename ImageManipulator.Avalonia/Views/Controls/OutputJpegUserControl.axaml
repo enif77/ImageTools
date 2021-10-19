@@ -11,21 +11,22 @@
             Grid.Column="0" Grid.Row="0"
             IsChecked="{Binding GenerateJpeg}" />
         
-        <TextBlock
-            Grid.Column="1" Grid.Row="0">JPEG</TextBlock>
+        <TextBlock Grid.Column="1" Grid.Row="0">JPEG</TextBlock>
         
-        <TextBlock
-            Grid.Column="1" Grid.Row="1">Maximal JPEG quality:</TextBlock>
+        <TextBlock Grid.Column="1" Grid.Row="1">Maximal JPEG quality:</TextBlock>
         
         <Slider
-            Grid.Column="2" Grid.Row="1" Minimum="1" Maximum="100" />
+            Grid.Column="2" Grid.Row="1"
+            Minimum="1"
+            Maximum="100"
+            IsEnabled="{Binding #ApplyCheckBox.IsChecked}" />
         
-        <TextBlock
-            Grid.Column="1" Grid.Row="2">Maximal file size:</TextBlock>
+        <TextBlock Grid.Column="1" Grid.Row="2">Maximal file size:</TextBlock>
         
         <StackPanel
             Grid.Column="2" Grid.Row="2"
-            Orientation="Horizontal">
+            Orientation="Horizontal"
+            IsEnabled="{Binding #ApplyCheckBox.IsChecked}">
             
             <TextBox Name="MaxSizeTextBox"></TextBox>
             <Button>-</Button>

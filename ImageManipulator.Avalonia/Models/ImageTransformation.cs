@@ -39,12 +39,12 @@ namespace ImageManipulator.Avalonia.Models
         #endregion
 
 
-        #region output
+        #region output - JPEG
 
         /// <summary>
-        /// If true, the JPEG output file format will be used.
+        /// If true, the JPEG output file format will be generated.
         /// </summary>
-        public bool UseJpegOutputFileFormat { get; set; }
+        public bool GenerateJpeg { get; set; }
         
         /// <summary>
         /// The maximal requested JPEG image quality (0 &lt; Q &lt;= 100).
@@ -55,6 +55,16 @@ namespace ImageManipulator.Avalonia.Models
         /// The maximal JPEG image file size in Bytes.
         /// </summary>
         public int MaxJpegImageSizeBytes { get; set; }
+        
+        #endregion
+        
+        
+        #region output - PNG
+
+        /// <summary>
+        /// If true, the PNG output file format will be generated.
+        /// </summary>
+        public bool GeneratePng { get; set; }
         
         /// <summary>
         /// The requested PNG compression level (0 &lt;= C &lt; 10).

@@ -11,15 +11,14 @@
             Grid.Column="0" Grid.Row="0"
             IsChecked="{Binding ApplyResize}" />
         
-        <TextBlock
-            Grid.Column="1" Grid.Row="0">Resize</TextBlock>
+        <TextBlock Grid.Column="1" Grid.Row="0">Resize</TextBlock>
         
-        <TextBlock
-            Grid.Column="1" Grid.Row="1">Max image side size:</TextBlock>
+        <TextBlock Grid.Column="1" Grid.Row="1">Max image side size:</TextBlock>
         
         <StackPanel
             Grid.Column="2" Grid.Row="1"
-            Orientation="Horizontal">
+            Orientation="Horizontal"
+            IsEnabled="{Binding #ApplyCheckBox.IsChecked}">
             
             <TextBox Name="ValueTextBox"></TextBox>
             <TextBlock>px</TextBlock>
