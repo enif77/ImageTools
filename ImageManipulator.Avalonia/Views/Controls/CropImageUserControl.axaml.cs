@@ -4,7 +4,7 @@ using Avalonia.Markup.Xaml;
 
 namespace ImageManipulator.Avalonia.Views.Controls
 {
-    public class CropImageUserControl : UserControl
+    public partial class CropImageUserControl : UserControl
     {
         public CropImageUserControl()
         {

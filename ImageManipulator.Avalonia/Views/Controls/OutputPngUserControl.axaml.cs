@@ -4,7 +4,7 @@ using Avalonia.Markup.Xaml;
 
 namespace ImageManipulator.Avalonia.Views.Controls
 {
-    public class OutputPngUserControl : UserControl
+    public partial class OutputPngUserControl : UserControl
     {
         public OutputPngUserControl()
         {

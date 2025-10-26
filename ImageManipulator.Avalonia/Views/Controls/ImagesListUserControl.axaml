@@ -4,6 +4,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="320" d:DesignHeight="450"
+             x:CompileBindings="True"
+             x:DataType="vm:MainWindowViewModel"
              x:Class="ImageManipulator.Avalonia.Views.Controls.ImagesListUserControl">
 
     <Design.DataContext>
@@ -16,7 +18,7 @@
             Margin="4"
             ScrollViewer.VerticalScrollBarVisibility="Visible"
             VerticalAlignment="Stretch"
-            Items="{Binding Images}"
+            ItemsSource="{Binding Images}"
             Selection="{Binding Selection}">
             
             <!-- <ListBox.ItemTemplate> -->

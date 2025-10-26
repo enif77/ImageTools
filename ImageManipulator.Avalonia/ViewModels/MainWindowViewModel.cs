@@ -1,4 +1,4 @@
-﻿/* Image Manipulator - (C) 2021 Premysl Fara  */
+﻿/* Image Manipulator - (C) Premysl Fara  */
 
 using Avalonia.Controls;
 using Avalonia.Controls.Selection;
@@ -10,6 +10,7 @@ namespace ImageManipulator.Avalonia.ViewModels
     using System.Collections.ObjectModel;
     using System.IO;
     using System.Linq;
+    using System.Threading.Tasks;
     
     using ImageManipulator.Avalonia.Models;
     using ImageManipulator.Avalonia.Services;
@@ -314,7 +315,7 @@ namespace ImageManipulator.Avalonia.ViewModels
         }
 
 
-        public async void AddImagesButtonClickedAsync()
+        public async Task AddImagesButtonClickedAsync()
         {
             Selection.Clear();
 
@@ -325,7 +326,7 @@ namespace ImageManipulator.Avalonia.ViewModels
                 Title = "Choose images to add"
             };
 
-            var selectedFiles = await ofd.ShowAsync(MainWindow);
+            var selectedFiles = await ofd.ShowAsync(MainWindow!);
             if (selectedFiles == null)
             {
                 return;
@@ -370,7 +371,7 @@ namespace ImageManipulator.Avalonia.ViewModels
                 return;
             }
 
-            var selectedImages = new List<ImageInfoViewModel>(Selection.SelectedItems);
+            var selectedImages = new List<ImageInfoViewModel>(Selection.SelectedItems!);
             Selection.Clear();
             foreach (var selectedImage in selectedImages)
             {

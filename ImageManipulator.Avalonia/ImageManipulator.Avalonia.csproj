@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
     </PropertyGroup>
     <ItemGroup>
@@ -9,10 +9,10 @@
         <AvaloniaResource Include="Assets\**" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Avalonia" Version="0.10.13" />
-        <PackageReference Include="Avalonia.Desktop" Version="0.10.13" />
-        <PackageReference Include="Avalonia.Diagnostics" Version="0.10.13" />
-        <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.13" />
+        <PackageReference Include="Avalonia" Version="11.3.8" />
+        <PackageReference Include="Avalonia.Desktop" Version="11.3.8" />
+        <PackageReference Include="Avalonia.Diagnostics" Version="11.3.8" />
+        <PackageReference Include="Avalonia.ReactiveUI" Version="11.3.8" />
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\ImageTools.Shared\ImageTools.Shared.csproj" />

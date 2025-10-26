@@ -4,7 +4,7 @@ using Avalonia.Markup.Xaml;
 
 namespace ImageManipulator.Avalonia.Views.Controls
 {
-    public class ImagesListUserControl : UserControl
+    public partial class ImagesListUserControl : UserControl
     {
         public ImagesListUserControl()
         {
