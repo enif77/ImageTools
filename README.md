@@ -17,7 +17,7 @@ Resizes an image so it matches the output ratio and none of its sides is bigger 
 
 - MaxSideSize: The maximal side size in pixels (0 < S <= Int32.Max).
 
-Its applied after cropping.
+It's applied after cropping.
 
 ## Output format
 
