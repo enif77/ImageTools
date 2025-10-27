@@ -12,7 +12,10 @@
     </Design.DataContext>
     
     <Grid
-        RowDefinitions="Auto, Auto, Auto, Auto, *">
+        RowDefinitions="Auto, Auto, Auto, Auto, *"
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Top"
+        Margin="10">
         
         <controls:CropImageUserControl Grid.Row="0"/>
         <controls:ResizeImageUserControl Grid.Row="1"/>
