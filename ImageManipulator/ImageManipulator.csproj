@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ImageTools.Core\ImageTools.Core.csproj" />
     <ProjectReference Include="..\ImageTools.Shared\ImageTools.Shared.csproj" />
   </ItemGroup>
 
